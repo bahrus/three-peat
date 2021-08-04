@@ -1,0 +1,19 @@
+{
+  "name": "three-peat",
+  "version": "0.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bahrus/three-peat.git"
+  },
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/bahrus/three-peat/issues"
+  },
+  "homepage": "https://github.com/bahrus/three-peat#readme"
+}
