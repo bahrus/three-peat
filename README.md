@@ -1,5 +1,7 @@
 # three-peat (🔁)
 
+Manage an HTML template list.
+
 The name "three-peat" refers to the fact that in order to define loop, you need:
 
 1.  A DOM fragment to repeat

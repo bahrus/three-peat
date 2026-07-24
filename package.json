@@ -1,16 +1,49 @@
 {
   "name": "three-peat",
+  "type": "module",
   "version": "0.0.0",
-  "description": "",
-  "main": "index.js",
+    "keywords": [
+    "web-components",
+    "web-component",
+    "custom-element",
+    "custom-elements",
+    "template",
+    "bind",
+    "observe",
+    "each"
+  ],
+  "description": "Manage an HTML template list.",
+  "main": "three-peat.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "node build.mjs",
+    "serve": "node ./node_modules/spa-ssi/serve.js",
+    "test": "playwright test",
+    "safari": "npx playwright wk http://localhost:8000",
+    "update": "ncu -u && npm install"
+  },
+  "files": [
+    "*.js",
+    "*.json",
+    "/types/three-peat/types.d.ts"
+  ],
+  "types": "./types/three-peat/types.d.ts",
+  "dependencies": {
+    "assign-gingerly": "0.0.64",
+    "be-hive": "0.1.15",
+    "id-generation": "0.0.5",
+    "mount-observer": "0.1.43",
+    "nested-regex-groups": "0.0.7",
+    "roundabout-lib": "0.0.28"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.61.1",
+    "spa-ssi": "0.0.27"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/bahrus/three-peat.git"
   },
-  "author": "",
+  "author": "anderson.bruce.b@gmail.com",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/bahrus/three-peat/issues"
