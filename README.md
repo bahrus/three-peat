@@ -1,4 +1,4 @@
-# three-peat
+# three-peat (🔁)
 
 The name "three-peat" refers to the fact that in order to define loop, you need:
 
@@ -14,7 +14,7 @@ Typical usage
         <table>
             <thead><tr><th>Rank</th><th>NOC</th><th>Gold</th><th>Silver</th><th>Bronze</th><th>Total</th></tr></thead>
             <tbody>
-                <tr three-peat>
+                <tr 🔁>
                     <td itemprop="rank"></td>
                     <td itemprop="noc"></td>
                     <td itemprop="gold"></td>
@@ -31,11 +31,29 @@ Typical usage
 
 What this does is it makes many assumptions.  But don't panic if what it assumes doesn't match your use case:
 
-1.  Finds the host that contains the three-peat adorned element..  In this case, it's my-element.
-2.  Assumes the host is iterable.  That may be strange for custom elements.  See below.
+1.  Finds the host that contains the three-peat adorned element.  In this case, it's my-element.
+2.  Assumes the host is iterablem.  That may be strange for custom elements.  See below.
 3.  Assumes each item of the iterable list has properties rank, noc, gold, silver, bronze, total.
 4.  Turns the adorned tr element into a template.
-5.  Assumes the placement of the repeating elements should could right after the tr
+5.  Assumes the placement of the repeating elements should could right after the adorned element
 6.  Renders the list.
-7.  Listens to the host for event "tbd"
+7.  Listens to the host for event "." to know when list changed
+
+Each of these assumptions can be made explicit:
+
+> 2.  Assumes the host is iterable....
+
+🔁-listProp can point to the property of the list
+
+> 3. Assumes each item of the iterable list has properties rank, noc, gold, silver, bronze, total.
+
+🔁-each can specify how each item's values are distributed into the cloned document fragment.
+
+> 5.  Assumes the placement of the repeating elements should could right after the adorned element
+
+🔁-target can specify where to place the repeating cloned fragments.
+
+> 7.  Listens to the host for event "." to know when list changed
+
+If 🔁-listProp is specified, assumes there's a propagator, and if doesn't exist, creates one.  Can alternatively specify 🔁-update-on
 
