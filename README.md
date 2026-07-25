@@ -15,6 +15,29 @@ Typical usage
     <template shadowrootmode=open>
         <table>
             <thead><tr><th>Rank</th><th>NOC</th><th>Gold</th><th>Silver</th><th>Bronze</th><th>Total</th></tr></thead>
+            <tbody three-peat>
+                <tr>
+                    <td itemprop="rank"></td>
+                    <td itemprop="noc"></td>
+                    <td itemprop="gold"></td>
+                    <td itemprop="silver"></td>
+                    <td itemprop="bronze"></td>
+                    <td itemprop="total"></td>
+                </tr>
+            </tbody>
+        </table>
+        <be-hive></be-hive>
+    </template>
+</my-element>
+```
+
+In more constrained environments where name spacing is well monitored, a shorter, or alternative name can be used.  This package provides one such alternative shorter name, 🔁:
+
+```html
+<my-element>
+    <template shadowrootmode=open>
+        <table>
+            <thead><tr><th>Rank</th><th>NOC</th><th>Gold</th><th>Silver</th><th>Bronze</th><th>Total</th></tr></thead>
             <tbody 🔁>
                 <tr>
                     <td itemprop="rank"></td>
@@ -31,6 +54,9 @@ Typical usage
 </my-element>
 ```
 
+On Windows, this emoji can be located via 🪟+"repeat".
+
+
 What this does is it makes many assumptions.  But don't panic if what it assumes doesn't match your use case:
 
 1.  Finds the host that contains the three-peat adorned element.  In this case, it's my-element.
@@ -45,7 +71,15 @@ Each of these assumptions can be made explicit:
 
 > 1. Finds the host that contains the three-peat adorned element
 
-🔁-src can also specify a peer element to get the list from.
+🔁-src can also specify a peer element to get the list from via id.
+
+Also, finding the host first checks for a containing element with [an itemscope manager](https://github.com/bahrus/assign-gingerly#itemscope-managers-chrome-146).
+
+<details>
+    <summary>Technical details of how the host is found</summary>
+
+    We use 
+</details>
 
 > 2.  Assumes the host is iterable....
 
@@ -62,6 +96,8 @@ Each of these assumptions can be made explicit:
 > 7.  Listens to the host for event "." to know when list changed
 
 If 🔁-listProp is specified, assumes there's a propagator, and if doesn't exist, creates one.  Can alternatively specify 🔁-update-on
+
+## Defining a custom element or itemscope manager that works seamlessly with 
 
 ## Viewing Demos Locally
 
