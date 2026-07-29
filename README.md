@@ -80,7 +80,7 @@ Also, finding the host first checks for a containing element with [an itemscope 
 <details>
     <summary>Technical details of how the host is found</summary>
 
-    Uses assign-gingerly/inference/upSearch.js
+    Uses assign-gingerly/inferencer/upSearch.js
 
 
 </details>
@@ -106,7 +106,7 @@ Also, finding the host first checks for a containing element with [an itemscope 
 
 If 🔁-listProp is specified, assumes there's a propagator, and if doesn't exist, creates one.  Can alternatively specify 🔁-update-on
 
-## Defining a custom element or itemscope manager that works seamlessly with *three-peat*.  [assign-gingerly](https://github.com/bahrus/assign-gingerly#use-case-iterable-classes-with-private-lists) provides a generic class mixin that can it easy to define custom elements or itemscope managers that work most seamlessly with three-peat.
+## Defining a custom element or itemscope manager that works seamlessly with *three-peat*.  [assign-gingerly](https://github.com/bahrus/assign-gingerly#use-case-iterable-classes-with-private-lists) provides a generic class mixin that makes it easy to define custom elements or itemscope managers that work most seamlessly with three-peat.
 
 ## Viewing Demos Locally
 

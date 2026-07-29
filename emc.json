@@ -1,0 +1,31 @@
+{
+    "enhConfig": {
+        "enhKey": "three-peat",
+        "spawn": "three-peat/three-peat.js",
+        "withAttrs": {
+            "base": "three-peat",
+            "listProp": "${base}-list-prop",
+            "src": "${base}-src",
+            "each": "${base}-each",
+            "_each": {
+                "instanceOf": "Object"
+            },
+            "target": "${base}-target",
+            "updateOn": "${base}-update-on"
+        }
+    },
+    "customData": {
+        "weakRef": {
+            "properties": [
+                "enhancedElement"
+            ]
+        },
+        "actions": {
+            "hydrate": {
+                "ifAllOf": [
+                    "enhancedElement"
+                ]
+            }
+        }
+    }
+}

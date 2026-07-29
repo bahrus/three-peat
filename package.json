@@ -28,7 +28,7 @@
   ],
   "types": "./types/three-peat/types.d.ts",
   "dependencies": {
-    "assign-gingerly": "0.0.64",
+    "assign-gingerly": "0.0.67",
     "be-hive": "0.1.15",
     "id-generation": "0.0.5",
     "mount-observer": "0.1.43",
@@ -36,7 +36,7 @@
     "roundabout-lib": "0.0.28"
   },
   "devDependencies": {
-    "@playwright/test": "1.61.1",
+    "@playwright/test": "1.62.0",
     "spa-ssi": "0.0.27"
   },
   "repository": {

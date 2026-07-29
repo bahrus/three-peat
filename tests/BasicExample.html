@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Basic Example</title>
+    <!-- #include virtual="/imports.html" -->
+    <be-hive>
+        <script type=emc src="three-peat/emc.json"></script>
+    </be-hive>
+    <script type=module>
+        import 'be-hive/be-hive.js';
+        class MyElement extends HTMLElement{
+            #list = [
+                {rank: 1, noc: 'USA', gold: 40, silver: 44, bronze: 42, total: 126},
+                {rank: 2, noc: 'China', gold: 40, silver: 27, bronze: 24, total: 91},
+                {rank: 3, noc: 'Japan', gold: 20, silver: 12, bronze: 13, total: 45},
+            ];
+            *[Symbol.iterator](){
+                yield* this.#list;
+            }
+        }
+        customElements.define('my-element', MyElement);
+    </script>
+</head>
+<body>
+    <my-element>
+        <template shadowrootmode=open>
+            <table>
+                <thead><tr><th>Rank</th><th>NOC</th><th>Gold</th><th>Silver</th><th>Bronze</th><th>Total</th></tr></thead>
+                <tbody three-peat>
+                    <tr>
+                        <td itemprop="rank"></td>
+                        <td itemprop="noc"></td>
+                        <td itemprop="gold"></td>
+                        <td itemprop="silver"></td>
+                        <td itemprop="bronze"></td>
+                        <td itemprop="total"></td>
+                    </tr>
+                </tbody>
+            </table>
+            <be-hive></be-hive>
+        </template>
+    </my-element>
+    <div id=target></div>
+    <script>
+        function runTest(){
+            const rows = document.querySelector('my-element').shadowRoot.querySelectorAll('tbody tr');
+            if(rows.length !== 3) return;
+            const firstNoc = rows[0].querySelector('[itemprop=noc]').textContent;
+            const thirdTotal = rows[2].querySelector('[itemprop=total]').textContent;
+            if(firstNoc === 'USA' && thirdTotal === '45'){
+                target.setAttribute('mark', 'good');
+            }
+        }
+        setTimeout(() => {
+            runTest();
+        }, 2000);
+    </script>
+</body>
+</html>

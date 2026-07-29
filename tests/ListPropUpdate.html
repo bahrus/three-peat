@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>List Prop Update</title>
+    <!-- #include virtual="/imports.html" -->
+    <be-hive>
+        <script type=emc src="three-peat/🔁.json"></script>
+    </be-hive>
+    <script type=module>
+        import 'be-hive/be-hive.js';
+        class WorldRanking extends HTMLElement{
+            propagator = new EventTarget();
+            #list = [
+                {rank: 1, noc: 'USA', gold: 40, silver: 44, bronze: 42, total: 126},
+                {rank: 2, noc: 'China', gold: 40, silver: 27, bronze: 24, total: 91},
+            ];
+            get list(){
+                return this.#list;
+            }
+            set list(nv){
+                this.#list = nv;
+                this.propagator.dispatchEvent(new Event('list'));
+            }
+            addItem(item){
+                this.list = [...this.#list, item];
+            }
+        }
+        customElements.define('world-ranking', WorldRanking);
+    </script>
+</head>
+<body>
+    <world-ranking id=rankings></world-ranking>
+    <table>
+        <thead><tr><th>Rank</th><th>NOC</th><th>Gold</th><th>Silver</th><th>Bronze</th><th>Total</th></tr></thead>
+        <tbody 🔁 🔁-src=rankings 🔁-list-prop=list>
+            <tr>
+                <td itemprop="rank"></td>
+                <td itemprop="noc"></td>
+                <td itemprop="gold"></td>
+                <td itemprop="silver"></td>
+                <td itemprop="bronze"></td>
+                <td itemprop="total"></td>
+            </tr>
+        </tbody>
+    </table>
+    <button id=addRow type=button>Add Row</button>
+    <div id=target></div>
+    <script>
+        addRow.addEventListener('click', () => {
+            rankings.addItem({rank: 3, noc: 'Japan', gold: 20, silver: 12, bronze: 13, total: 45});
+        });
+        function runTest(){
+            const initialRows = document.querySelectorAll('tbody tr');
+            if(initialRows.length !== 2) return;
+            addRow.click();
+            setTimeout(() => {
+                const rows = document.querySelectorAll('tbody tr');
+                if(rows.length !== 3) return;
+                const thirdNoc = rows[2].querySelector('[itemprop=noc]').textContent;
+                if(thirdNoc === 'Japan'){
+                    target.setAttribute('mark', 'good');
+                }
+            }, 1000);
+        }
+        setTimeout(() => {
+            runTest();
+        }, 2000);
+    </script>
+</body>
+</html>
