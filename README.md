@@ -78,6 +78,13 @@ Also, finding the host first checks for a containing element with [an itemscope 
 <details>
     <summary>Technical details of how the host is found</summary>
 
+    Uses assign-gingerly/inference/upSearch.js
+
+
+</details>
+
+<details>
+    <summary>Technical details of how the repeated content is rendered</summary>
     We use [assign-gingerly's manageTemplateList handler](https://github.com/bahrus/assign-gingerly/blob/baseline/docs/manage-template-list.md) behind the scenes.
 </details>
 
