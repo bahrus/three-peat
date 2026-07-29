@@ -24,10 +24,12 @@
             "hydrate": {
                 "ifKeyIn": [
                     "src",
-                    "listProp"
+                    "listProp",
+                    "initialized"
                 ],
                 "ifAllOf": [
-                    "enhancedElement"
+                    "enhancedElement",
+                    "initialized"
                 ]
             }
         }
