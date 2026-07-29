@@ -35,6 +35,8 @@ three-peat/
 ├── imports.html         # Import map, pulled into test pages via SSI include
 ├── playwright.config.ts # Chromium only (needs Chrome 146+ JSON import assertions)
 ├── tests/               # *.html fixture + *.spec.mjs twin, "mark=good" idiom
+├── .kiro/hooks/         # Kiro agent hooks (auto-build, auto npm update)
+├── .kimi-code/hooks/    # Kimi Code equivalents — see "AI assistant hooks" below
 └── types/               # git submodule shared across all enhancements — be careful
     ├── three-peat/types.d.ts        # this project's types (EndUserProps/AllProps/Actions)
     └── assign-gingerly/types.d.ts   # shared library types
@@ -120,6 +122,50 @@ withAttrs: {
 - The "generic class mixin" the README mentions is real as of 0.0.67:
   `assign-gingerly/DX/IterableMixin.js` (see above).
 
+## AI assistant hooks (.kiro and .kimi-code)
+
+This project keeps hook definitions for both assistants, so it stays AI-neutral:
+
+- `.kiro/hooks/*.kiro.hook` — Kiro agent hooks (`fileEdited` on `emc.mjs`/`🔁.mjs` →
+  `npm run build`; `fileEdited` on `package.json` → `npm run update`).
+- `.kimi-code/hooks/*.mjs` — the Kimi Code equivalents. Kimi Code has no `fileEdited`
+  event; the nearest equivalent is a `PostToolUse` hook (observation-only, fail-open)
+  matching the `Write`/`Edit` tools. The script inspects the edited file's path from the
+  stdin JSON payload and acts only when relevant:
+  - `auto-build.mjs` — edited file is `emc.mjs` or an emoji `.mjs` → `npm run build`
+    in that file's directory (only if the project defines a `build` script).
+  - `auto-npm-update.mjs` — edited file is `package.json` → `npm run update`
+    (only if the project defines an `update` script, so it's safe to register globally).
+
+Kimi Code hooks are registered in the **user-level** `~/.kimi-code/config.toml` (there is
+no project-local hook file; `.kimi-code/local.toml` is machine-specific workspace config
+and should stay gitignored — the `hooks/` scripts, by contrast, are meant to be committed).
+To activate:
+
+```toml
+# ~/.kimi-code/config.toml
+[[hooks]]
+event = "PostToolUse"
+matcher = "Write|Edit"
+command = "node C:/git/binding/three-peat/.kimi-code/hooks/auto-build.mjs"
+timeout = 15
+
+[[hooks]]
+event = "PostToolUse"
+matcher = "Write|Edit"
+command = "node C:/git/binding/three-peat/.kimi-code/hooks/auto-npm-update.mjs"
+timeout = 600
+```
+
+Notes:
+
+- The scripts are project-agnostic (they act on whatever file was edited, in that file's
+  directory), so one registration covers all sibling enhancement projects.
+- Hooks take effect for **new sessions** (or after `/reload`).
+- Unlike Kiro's filesystem watcher, `PostToolUse` only fires on edits made through the
+  agent's tools — manual saves in an external editor don't trigger it.
+- Docs: https://www.kimi.com/code/docs/en/kimi-code-cli/customization/hooks.html
+
 ## Testing
 
 - `npm run serve` → spa-ssi on port 8000 (processes the
@@ -155,5 +201,8 @@ Full guide: `types/NewEnhancementInstructions.md` (Kiro-oriented but accurate). 
    `build.mjs`; run `npm run build` and inspect the JSON.
 4. `<name>.js` — plain class per the pattern above; keep logic in small `(self)` actions.
 5. `imports.html`, `playwright.config.ts` (chromium only), `.vscode/settings.json`.
-6. Tests: one html+spec pair per scenario, `mark=good` idiom. Build incrementally:
+6. Hooks for AI neutrality: `.kiro/hooks/auto-build-config.kiro.hook` +
+   `auto-npm-update.kiro.hook`, and the Kimi Code equivalents in `.kimi-code/hooks/`
+   (see "AI assistant hooks" above — copy the two `.mjs` scripts verbatim).
+7. Tests: one html+spec pair per scenario, `mark=good` idiom. Build incrementally:
    basic case → inference → custom events → remote/peer targeting.
