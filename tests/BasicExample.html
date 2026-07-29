@@ -10,14 +10,14 @@
     </be-hive>
     <script type=module>
         import 'be-hive/be-hive.js';
-        class MyElement extends HTMLElement{
-            #list = [
-                {rank: 1, noc: 'USA', gold: 40, silver: 44, bronze: 42, total: 126},
-                {rank: 2, noc: 'China', gold: 40, silver: 27, bronze: 24, total: 91},
-                {rank: 3, noc: 'Japan', gold: 20, silver: 12, bronze: 13, total: 45},
-            ];
-            *[Symbol.iterator](){
-                yield* this.#list;
+        import {IterableMixin} from 'assign-gingerly/DX/IterableMixin.js';
+        class MyElement extends IterableMixin()(HTMLElement){
+            connectedCallback(){
+                MyElement.setItems(this, [
+                    {rank: 1, noc: 'USA', gold: 40, silver: 44, bronze: 42, total: 126},
+                    {rank: 2, noc: 'China', gold: 40, silver: 27, bronze: 24, total: 91},
+                    {rank: 3, noc: 'Japan', gold: 20, silver: 12, bronze: 13, total: 45},
+                ]);
             }
         }
         customElements.define('my-element', MyElement);

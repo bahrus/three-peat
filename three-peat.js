@@ -94,8 +94,14 @@ class ThreePeat {
             do: 'builtIns.manageTemplateList',
             fromEachItem
         });
+        // Hosts built with assign-gingerly's IterableMixin keep the list private,
+        // exposing it (and change notification) via statics on the constructor.
+        const hostConstructor = host.constructor;
+        const usesIterableMixin = typeof hostConstructor?.getItems === 'function';
         const render = async () => {
-            const forEach = listProp !== undefined ? host[listProp] : host;
+            const forEach = listProp !== undefined ? host[listProp]
+                : usesIterableMixin ? hostConstructor.getItems(host)
+                : host;
             /**
              * @type {ManageTemplateListResolvedParams}
              */
@@ -117,6 +123,9 @@ class ThreePeat {
                 propagator = await new Infer(host, listProp).getPropagator();
             }
             propagator.addEventListener(listProp, render);
+        }else if(usesIterableMixin){
+            // IterableMixin.setItems dispatches 'items-changed' on the instance
+            host.addEventListener('items-changed', render);
         }
 
         return /** @type {PAP} */ ({resolved: true});

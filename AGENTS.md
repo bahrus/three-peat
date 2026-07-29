@@ -101,17 +101,24 @@ withAttrs: {
 - Update subscription: `three-peat-update-on` → plain `host.addEventListener(updateOn)`;
   else `three-peat-list-prop` → `host.propagator` if it's an EventTarget, else
   `new Infer(host, listProp).getPropagator()`; event name === listProp.
+- Hosts built with `assign-gingerly/DX/IterableMixin.js`
+  (`class MyElement extends IterableMixin()(HTMLElement)`) keep the list in a private
+  field and expose statics: `MyElement.getItems(instance)` / `setItems(instance, items)`
+  / `assignTo(instance, rhs)`; `setItems` dispatches an `items-changed` event on the
+  instance. three-peat detects the static `getItems` on the host's constructor, uses it
+  as the list source, and subscribes to `items-changed` (when neither `-list-prop` nor
+  `-update-on` is given). See `tests/BasicExample.html` for the canonical usage.
 
-### Discovered discrepancies (docs/types vs installed assign-gingerly 0.0.64)
+### Notes on assign-gingerly 0.0.67
 
-- README says `assign-gingerly/inference/upSearch.js`; the real path is
-  `assign-gingerly/inferencer/upSearch.js`.
-- The runtime reads `fromEachItem.assignToFragment` (and `fromSource`), while older docs
-  say `toClone` (and `fromHost`). The shared `types/assign-gingerly/types.d.ts` was
-  patched additively (`assignToFragment`, `configs`); `toClone` is kept as deprecated.
-- There is no "generic mixin" for iterable classes; the pattern is a class with
-  `*[Symbol.iterator]()`, an optional `static assignTo`, and (for updates) a
-  `propagator = new EventTarget()` dispatching an event named after the list property.
+- README said `inference/upSearch.js`; the real path is
+  `assign-gingerly/inferencer/upSearch.js` (fixed in the README).
+- Per-item distribution config key is `toClone` (with `fromHost` for host-level data) —
+  0.0.67 aligned the runtime with the docs; the brief `assignToFragment`/`fromSource`
+  naming in 0.0.64 is gone. The shared types in `types/assign-gingerly/types.d.ts` match
+  the shipped 0.0.67 types.
+- The "generic class mixin" the README mentions is real as of 0.0.67:
+  `assign-gingerly/DX/IterableMixin.js` (see above).
 
 ## Testing
 
