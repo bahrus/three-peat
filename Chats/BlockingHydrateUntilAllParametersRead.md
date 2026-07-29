@@ -53,3 +53,32 @@ I haven't committed the code yet, so you can examine the git status to confirm m
 Unless you can think of a better way, can you document this where you think it is most appropriate?  I'm thinking both types/NewEnhancementInstructions.md and types/EnhancementConversionInstructions.md
 
 It should only be done if there is a scenario like this where it is predictable that nothing should happen until all the relevant attributes have been read.
+
+---
+
+## Kimi responds
+
+No problem — I'll hold off on changes. Here's what I found from the runtime code and a test run, which should save you some troubleshooting time:
+
+**Test status with your current uncommitted change:** both tests fail — `hydrate` never fires at all now.
+
+**Root cause** (in `node_modules/roundabout-lib/processors/actions.js`):
+
+1. When `ifKeyIn` is combined with other conditions like `ifAllOf`, an action only executes when the property that *changed* is in the `ifKeyIn` list (`actions.js:129-143`: `shouldExecute = conditionsMet && changedIsInKeyIn`).
+2. Your `initialized` flag is in `ifAllOf` but not in `ifKeyIn`. So when `self.initialized = true` fires its change event after `roundabout()` returns, `changedProperty` is `'initialized'`, which isn't in `ifKeyIn: ['src', 'listProp']` → `shouldExecute` is false → hydrate is skipped.
+3. And by that point, `src`/`listProp` have already been assigned (during `roundabout()`'s `initialPropVals` pass), so they never change again — no further trigger ever comes.
+
+**Why your earlier `ifKeyIn`-only attempt errored once then worked:** `evaluateConditions` treats `ifKeyIn` as *at least one* defined (`actions.js:264-270`), not *all*. `initialPropVals` are assigned one at a time by `assignGingerly`, so when `src` was set first, conditions passed with `listProp` still undefined → hydrate fired early and threw; when `listProp` was then set, it fired again and succeeded.
+
+**The likely one-line fix** (untested — was about to try it when you cancelled): add `'initialized'` to `ifKeyIn` too:
+
+```js
+hydrate: {
+    ifKeyIn: ['src', 'listProp', 'initialized'],
+    ifAllOf: ['enhancedElement', 'initialized']
+}
+```
+
+That way the `initialized = true` flip itself satisfies `changedIsInKeyIn`, all attribute reads are guaranteed done (it happens after `roundabout()` returns), and later `src`/`listProp` changes still re-trigger hydrate as originally intended.
+
+Happy to try that and rerun the tests whenever you're ready, or leave the troubleshooting to you — your call.
