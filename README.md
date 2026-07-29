@@ -92,13 +92,13 @@ Also, finding the host first checks for a containing element with [an itemscope 
 
 > 2.  Assumes the host is iterable....
 
-🔁-listProp can point to the property of the list
+🔁-listProp can point to the property of the element that has the list.
 
 > 3. Assumes each item of the iterable list has properties...
 
 🔁-each can specify how each item's values are distributed into the cloned document fragment.
 
-> 5.  Assumes the placement of the repeating elements should could right after the adorned element
+> 5.  Assumes the placement of the repeating elements should be appended to the children of the adorned element.
 
 🔁-target can specify where to place the repeating cloned fragments.
 
@@ -110,7 +110,7 @@ If 🔁-listProp is specified, assumes there's a propagator, and if doesn't exis
 
 ## Viewing Demos Locally
 
-Any web server that can serve static files will do, but...
+Any web server that can serve static files with server-side includes will do, but...
 
 
 1. Install git

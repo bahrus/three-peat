@@ -29,6 +29,7 @@ export const emc = {
         },
         actions: {
             hydrate: {
+                ifKeyIn: ['src', 'listProp'],
                 ifAllOf: ['enhancedElement']
             }
         }

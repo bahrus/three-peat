@@ -22,6 +22,10 @@
         },
         "actions": {
             "hydrate": {
+                "ifKeyIn": [
+                    "src",
+                    "listProp"
+                ],
                 "ifAllOf": [
                     "enhancedElement"
                 ]
