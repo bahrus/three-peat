@@ -82,3 +82,4 @@ hydrate: {
 That way the `initialized = true` flip itself satisfies `changedIsInKeyIn`, all attribute reads are guaranteed done (it happens after `roundabout()` returns), and later `src`/`listProp` changes still re-trigger hydrate as originally intended.
 
 Happy to try that and rerun the tests whenever you're ready, or leave the troubleshooting to you — your call.
+
