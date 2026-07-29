@@ -2,13 +2,13 @@
 
 Manage an HTML template list.
 
-The name "three-peat" refers to the fact that in order to define loop, you need:
+The name "three-peat" refers to the fact that in order to define an HTML loop, you need:
 
-1.  A DOM fragment to repeat
+1.  A DOM fragment to instantiate and repeat
 2.  A place in the DOM tree to repeat it.
 3.  The source of the list
 
-Typical usage
+Typical usage, using the canonical name "three-peat"
 
 ```html
 <my-element>
@@ -78,7 +78,7 @@ Also, finding the host first checks for a containing element with [an itemscope 
 <details>
     <summary>Technical details of how the host is found</summary>
 
-    We use 
+    We use [assign-gingerly's manageTemplateList handler](https://github.com/bahrus/assign-gingerly/blob/baseline/docs/manage-template-list.md) behind the scenes.
 </details>
 
 > 2.  Assumes the host is iterable....
@@ -93,11 +93,11 @@ Also, finding the host first checks for a containing element with [an itemscope 
 
 🔁-target can specify where to place the repeating cloned fragments.
 
-> 7.  Listens to the host for event "." to know when list changed
+> 7.  Listens to the host for event "..." to know when list changed
 
 If 🔁-listProp is specified, assumes there's a propagator, and if doesn't exist, creates one.  Can alternatively specify 🔁-update-on
 
-## Defining a custom element or itemscope manager that works seamlessly with 
+## Defining a custom element or itemscope manager that works seamlessly with *three-peat*.  [assign-gingerly](https://github.com/bahrus/assign-gingerly#use-case-iterable-classes-with-private-lists) provides a generic class mixin that can it easy to define custom elements or itemscope managers that work most seamlessly with three-peat.
 
 ## Viewing Demos Locally
 
