@@ -1,6 +1,8 @@
 # three-peat (🔁)
 
-Manage an HTML template list.
+three-peat is a DOM element enhancement library that uses [assign-gingerly](https://github.com/bahrus/assign-gingerly/) and [mount-observer](https://github.com/bahrus/mount-observer) as the basis for defining the element enhancement.
+
+three-peat helps manage an HTML template list.
 
 The name "three-peat" refers to the fact that in order to define an HTML loop, you need:
 
