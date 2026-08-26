@@ -28,15 +28,15 @@
   ],
   "types": "./types/three-peat/types.d.ts",
   "dependencies": {
-    "assign-gingerly": "0.0.67",
-    "be-hive": "0.1.15",
+    "assign-gingerly": "0.0.87",
+    "be-hive": "0.1.16",
     "id-generation": "0.0.5",
-    "mount-observer": "0.1.43",
-    "nested-regex-groups": "0.0.7",
-    "roundabout-lib": "0.0.28"
+    "mount-observer": "0.1.51",
+    "nested-regex-groups": "0.0.8",
+    "roundabout-lib": "0.0.35"
   },
   "devDependencies": {
-    "@playwright/test": "1.62.0",
+    "@playwright/test": "1.62.1",
     "spa-ssi": "0.0.27"
   },
   "repository": {
