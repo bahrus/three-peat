@@ -28,16 +28,16 @@
   ],
   "types": "./types/three-peat/types.d.ts",
   "dependencies": {
-    "assign-gingerly": "0.0.87",
-    "be-hive": "0.1.16",
+    "assign-gingerly": "0.0.97",
+    "be-hive": "0.1.18",
     "id-generation": "0.0.5",
-    "mount-observer": "0.1.51",
+    "mount-observer": "0.1.53",
     "nested-regex-groups": "0.0.8",
-    "roundabout-lib": "0.0.35"
+    "roundabout-lib": "0.0.38"
   },
   "devDependencies": {
-    "@playwright/test": "1.62.1",
-    "spa-ssi": "0.0.27"
+    "@playwright/test": "1.63.0",
+    "spa-ssi": "0.0.28"
   },
   "repository": {
     "type": "git",
