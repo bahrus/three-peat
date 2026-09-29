@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Programmatic three-peat targetElement</title>
+    <!-- #include virtual="/imports.html" -->
+    <script type=module>
+        class WorldRanking extends HTMLElement{
+            propagator = new EventTarget();
+            #list = [
+                {rank: 1, noc: 'USA', total: 126},
+                {rank: 2, noc: 'China', total: 91},
+            ];
+            get list(){ return this.#list; }
+            set list(nv){
+                this.#list = nv;
+                this.propagator.dispatchEvent(new Event('list'));
+            }
+            addItem(item){
+                this.list = [...this.#list, item];
+            }
+        }
+        customElements.define('world-ranking', WorldRanking);
+    </script>
+</head>
+<body>
+    <world-ranking id=kitchen></world-ranking>
+    <world-ranking id=porch></world-ranking>
+    <table><tbody id=tbody1><tr><td itemprop="rank"></td><td itemprop="noc"></td><td itemprop="total"></td></tr></tbody></table>
+    <table><tbody id=tbody2><tr><td itemprop="rank"></td><td itemprop="noc"></td><td itemprop="total"></td></tr></tbody></table>
+    <table><tbody id=destination></tbody></table>
+    <div id=target></div>
+
+    <script type=module>
+        import {defThreePeat} from '/def.js';
+        const emc = await defThreePeat(document.body);
+        const kitchen = document.querySelector('#kitchen');
+        const porch = document.querySelector('#porch');
+        const destination = document.querySelector('#destination');
+        const threePeat = tbody1.enh.get(emc);
+        Object.assign(threePeat, {src: kitchen, listProp: 'list'});
+        const threePeat2 = tbody2.enh.get(emc);
+        Object.assign(threePeat2, {src: new WeakRef(porch), listProp: 'list', target: destination});
+        setTimeout(async () => {
+            window.__initial = [document.querySelectorAll('#tbody1 tr:not([hidden])').length, document.querySelectorAll('#destination tr:not([hidden])').length].join();
+            porch.addItem({rank: 3, noc: 'Japan', total: 45});
+            setTimeout(() => {
+                const checks = {
+                    initial: window.__initial === '2,2',
+                    listChangeRerenders: document.querySelectorAll('#destination tr:not([hidden])').length === 3,
+                    // (stored as WeakRefs; roundabout's getter derefs them -- the GC tests prove the weak holding)
+                    srcReadsBack: threePeat.src === kitchen,
+                    targetReadsBack: threePeat2.target === destination,
+                };
+                target.dataset.checks = JSON.stringify(checks);
+                if(Object.values(checks).every(Boolean)) target.setAttribute('mark', 'good');
+            }, 300);
+        }, 1500);
+    </script>
+</body>
+</html>

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Programmatic three-peat targetElement</title>
+    <!-- #include virtual="/imports.html" -->
+    <script type=module>
+        class WorldRanking extends HTMLElement{
+            propagator = new EventTarget();
+            #list = [
+                {rank: 1, noc: 'USA', total: 126},
+                {rank: 2, noc: 'China', total: 91},
+            ];
+            get list(){ return this.#list; }
+            set list(nv){
+                this.#list = nv;
+                this.propagator.dispatchEvent(new Event('list'));
+            }
+            addItem(item){
+                this.list = [...this.#list, item];
+            }
+        }
+        customElements.define('world-ranking', WorldRanking);
+    </script>
+</head>
+<body>
+    <world-ranking id=kitchen></world-ranking>
+    <world-ranking id=porch></world-ranking>
+    <table><tbody id=tbody1><tr><td itemprop="rank"></td><td itemprop="noc"></td><td itemprop="total"></td></tr></tbody></table>
+    <table><tbody id=tbody2><tr><td itemprop="rank"></td><td itemprop="noc"></td><td itemprop="total"></td></tr></tbody></table>
+    <table><tbody id=destination></tbody></table>
+
+    <script type=module>
+        import {defThreePeat} from '/def.js';
+        const emc = await defThreePeat(document.body);
+        // references a framework might already hold -- no ids needed
+        const kitchen = document.querySelector('#kitchen');
+        const porch = document.querySelector('#porch');
+        // the list host (src) and the destination (target) by reference -- no ids needed
+        Object.assign(tbody1.enh.get(emc), {src: kitchen, listProp: 'list'});
+        Object.assign(tbody2.enh.get(emc), {
+            src: new WeakRef(porch),                                   // a WeakRef works too
+            listProp: 'list',
+            target: document.querySelector('#destination'),
+        });
+    </script>
+</body>
+</html>

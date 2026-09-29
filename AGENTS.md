@@ -28,6 +28,8 @@ Architecture (the "modern" stack, same as be-calculating / be-observing / be-swi
 ```
 three-peat/
 ├── three-peat.js        # Enhancement class (browser code, @ts-check + JSDoc types)
+├── def.js               # defThreePeat(ref) — registers emc.json for programmatic attachment
+│                        #   (see types/ImportantEnhancementAddendum.md; demos in demo/Programmatic)
 ├── emc.mjs              # SOURCE OF TRUTH for emc.json — edit this, never the .json
 ├── 🔁.mjs               # SOURCE OF TRUTH for 🔁.json (imports emc.json, overrides base/enhKey)
 ├── build.mjs            # node build.mjs → writes emc.json, then 🔁.json (order matters!)

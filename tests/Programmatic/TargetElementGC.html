@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Programmatic three-peat targetElement GC</title>
+    <!-- #include virtual="/imports.html" -->
+    <script type=module>
+        class WorldRanking extends HTMLElement{
+            propagator = new EventTarget();
+            #list = [
+                {rank: 1, noc: 'USA', total: 126},
+                {rank: 2, noc: 'China', total: 91},
+            ];
+            get list(){ return this.#list; }
+            set list(nv){
+                this.#list = nv;
+                this.propagator.dispatchEvent(new Event('list'));
+            }
+            addItem(item){
+                this.list = [...this.#list, item];
+            }
+        }
+        customElements.define('world-ranking', WorldRanking);
+    </script>
+</head>
+<body>
+    <world-ranking id=kitchen></world-ranking>
+    <world-ranking id=porch></world-ranking>
+    <table><tbody id=tbody1><tr><td itemprop="rank"></td><td itemprop="noc"></td><td itemprop="total"></td></tr></tbody></table>
+    <table><tbody id=tbody2><tr><td itemprop="rank"></td><td itemprop="noc"></td><td itemprop="total"></td></tr></tbody></table>
+    <table><tbody id=destination></tbody></table>
+
+    <script type=module>
+        import {defThreePeat} from '/def.js';
+        const emc = await defThreePeat(document.body);
+        // Set up inside a function scope, so this page keeps no reference of its own
+        // to #kitchen -- only the DOM (until the test removes it) and the enhancement.
+        (() => {
+            Object.assign(document.querySelector('#tbody1').enh.get(emc), {
+                src: document.querySelector('#kitchen'), listProp: 'list',
+            });
+            Object.assign(document.querySelector('#tbody2').enh.get(emc), {
+                src: new WeakRef(document.querySelector('#porch')), listProp: 'list',
+                target: document.querySelector('#destination'),
+            });
+        })();
+    </script>
+</body>
+</html>

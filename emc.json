@@ -1,6 +1,6 @@
 {
     "enhConfig": {
-        "enhKey": "three-peat",
+        "enhKey": "threePeat",
         "spawn": "three-peat/three-peat.js",
         "withAttrs": {
             "base": "three-peat",
@@ -25,6 +25,9 @@
                 "ifKeyIn": [
                     "src",
                     "listProp",
+                    "each",
+                    "target",
+                    "updateOn",
                     "initialized"
                 ],
                 "ifAllOf": [

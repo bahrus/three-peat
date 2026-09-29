@@ -9,7 +9,7 @@
  */
 export const emc = {
     enhConfig: {
-        enhKey: 'three-peat',
+        enhKey: 'threePeat',
         spawn: 'three-peat/three-peat.js',
         withAttrs: {
             base: 'three-peat',
@@ -29,7 +29,9 @@ export const emc = {
         },
         actions: {
             hydrate: {
-                ifKeyIn: ['src', 'listProp', 'initialized'],
+                // every end-user prop is listed, so that roundabout monitors
+                // them all -- reassigning any one (programmatically) re-renders.
+                ifKeyIn: ['src', 'listProp', 'each', 'target', 'updateOn', 'initialized'],
                 ifAllOf: ['enhancedElement', 'initialized']
             }
         }
